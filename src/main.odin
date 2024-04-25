@@ -152,7 +152,7 @@ init_modelAsteroid :: proc () -> [dynamic]ry.Vector2 {
 
     for i, idx in modelAsteroids {
         rand = rnd.create(100.0)
-        noise = rnd.float32_range(-1,1,&rand) * 0.4 + 0.8
+        noise = rnd.float32_range(-1,1,&rand)
         e = {
             noise * mth.sin_f32(f32(idx/20) * mth.PI), 
             noise * mth.cos_f32(f32(idx/20) * mth.PI), 
