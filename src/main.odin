@@ -34,15 +34,11 @@ main :: proc () {
     defer delete(lasers)
 
     timeElapsed  : f32 = -1.0
-    shootElapsed : f32 = -1.0
-    start        : f64 = 0
-    end          : f64 = 0
+    shootElapsed : f32 = 20.0
     tir          : shoot = {}
 
     angle : f32 = 0
     t := init_triangle()
-
-    spaceOk : bool = true
 
     ry.SetTraceLogLevel(ry.TraceLogLevel.NONE);
     ry.SetTargetFPS(60)
@@ -51,8 +47,6 @@ main :: proc () {
     defer ry.CloseWindow()
 
     for !ry.WindowShouldClose() {
-
-        start = ry.GetTime()
        
         if (timeElapsed > 0) {
         
@@ -76,12 +70,17 @@ main :: proc () {
             timeElapsed = 10
         }
 
-        if ry.IsKeyDown(ry.KeyboardKey.SPACE) && spaceOk {
+        if ry.IsKeyDown(ry.KeyboardKey.SPACE) && shootElapsed >= 1 {
                 tir.angle = t.r
                 tir.position.x = t.position.x - mth.cos_f32(tir.angle) * 20.0
                 tir.position.y = t.position.y - mth.sin_f32(tir.angle) * 20.0
                 append(&lasers,tir)
+                shootElapsed = 0.0
         }
+
+        shootElapsed = shootElapsed + ry.GetFrameTime()
+
+        fmt.printf("%f\n",shootElapsed)
 
         if ( t.position.x >= WIDTH ) {
             t.position.x = 0
@@ -116,16 +115,12 @@ main :: proc () {
         }
 
         for l in 0..< len(lasers) {
-            ry.DrawRectangleRec({lasers[l].position.x, lasers[l].position.y,1,1},ry.RED)
+            ry.DrawRectangleRec({lasers[l].position.x, lasers[l].position.y,10,3},ry.RED)
             lasers[l].position.x = lasers[l].position.x - mth.cos_f32(lasers[l].angle) * ry.GetFrameTime() * 100
             lasers[l].position.y = lasers[l].position.y - mth.sin_f32(lasers[l].angle) * ry.GetFrameTime() * 100
         }
 
         ry.EndDrawing()
-
-        end = ry.GetTime() - start 
-
-        fmt.printf("%f\n",mth.floor_f64(end/f64(ry.GetFrameTime())))
 
     }
 
