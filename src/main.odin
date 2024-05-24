@@ -58,8 +58,8 @@ main :: proc () {
             } else if ry.IsKeyDown(ry.KeyboardKey.RIGHT) {
                 t.r = t.r - 0.01
             } else if ry.IsKeyDown(ry.KeyboardKey.DOWN) {
-                t.dx = 0
-                t.dy = 0
+                t.dx = t.dx - (t.dx * 0.1)
+                t.dy = t.dy - (t.dy * 0.1)
             }
 
             timeElapsed = timeElapsed - ry.GetFrameTime()    
@@ -80,7 +80,7 @@ main :: proc () {
 
         shootElapsed = shootElapsed + ry.GetFrameTime()
 
-        fmt.printf("%f\n",shootElapsed)
+        //fmt.printf("%f\n",shootElapsed)
 
         if ( t.position.x >= WIDTH ) {
             t.position.x = 0
@@ -115,7 +115,7 @@ main :: proc () {
         }
 
         for l in 0..< len(lasers) {
-            ry.DrawRectangleRec({lasers[l].position.x, lasers[l].position.y,10,3},ry.RED)
+            ry.DrawCircleV({lasers[l].position.x,lasers[l].position.y},5,ry.RED)
             lasers[l].position.x = lasers[l].position.x - mth.cos_f32(lasers[l].angle) * ry.GetFrameTime() * 100
             lasers[l].position.y = lasers[l].position.y - mth.sin_f32(lasers[l].angle) * ry.GetFrameTime() * 100
         }
