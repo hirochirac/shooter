@@ -127,27 +127,18 @@ main :: proc () {
     
 }
 
-m :: proc ( a: f32, b: f32 ) -> f32 {
-    if ( a > b) {
-        return b
-    } else {
-        return a
-    }
-}
-
 
 init_modelAsteroid :: proc () -> [dynamic]ry.Vector2 {
     modelAsteroids : [dynamic]ry.Vector2 
     e: ry.Vector2
     noise: f32
-    rand : rnd.Rand
 
     modelAsteroids = make([dynamic]ry.Vector2,0,20)
 
 
     for i, idx in modelAsteroids {
-        rand = rnd.create(100.0)
-        noise = rnd.float32_range(-1,1,&rand)
+        rand := rnd.default_random_generator()
+        noise = rnd.float32_range(-1,1,rand)
         e = {
             noise * mth.sin_f32(f32(idx/20) * mth.PI), 
             noise * mth.cos_f32(f32(idx/20) * mth.PI), 
@@ -161,7 +152,7 @@ init_modelAsteroid :: proc () -> [dynamic]ry.Vector2 {
 
 init_triangle :: proc (position := ry.Vector2{WIDTH/2,HEIGHT/2}) -> triangle {
 
-    t : triangle = {
+    return {
         position = position,
         r = 0,
         vertex1 = {0.0,-5.0},
@@ -169,7 +160,6 @@ init_triangle :: proc (position := ry.Vector2{WIDTH/2,HEIGHT/2}) -> triangle {
         vertex3 = {2.5,2.5},
     }
 
-    return t
 
 }
 
